@@ -14,7 +14,7 @@ provider "aws" {
 }
 
 resource "aws_dynamodb_table" "google-project-table" {
-  name           = "DestinationEntries"
+  name           = "google-project-table"
   billing_mode   = "PAY_PER_REQUEST"
   hash_key       = "user_id"
   range_key      = "destination_name"
@@ -51,10 +51,10 @@ resource "aws_dynamodb_table" "google-project-table" {
   #   name = "destination_address"
   #   type = "S"
   # }
-  ttl {
-    attribute_name = "TimeToExist"
-    enabled        = false
-  }
+  # ttl {
+  #   attribute_name = "TimeToExist"
+  #   enabled        = false
+  # }
 
  
 
@@ -79,14 +79,37 @@ resource "aws_iam_role" "lambda_exec" {
   })
 }
 
+resource "aws_iam_policy" "dynamo_db_policy" {
+  name ="dynamo-db-put-policy"
+   policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "dynamodb:PutItem"
+        ],
+        Resource = aws_dynamodb_table.google-project-table.arn
+      }
+    ]
+  })
+
+}
+
+
+
 resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
   role       = aws_iam_role.lambda_exec.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
+resource "aws_iam_role_policy_attachment" "attach_putitem_policy" {
+  role       = aws_iam_role.lambda_exec.name
+  policy_arn = aws_iam_policy.dynamo_db_policy.arn
+}
 
 resource "aws_lambda_function" "my_lambda" {
   function_name = "google-api-lambda-function"
-  handler       = "google-api-lambda-function.handler"
+  handler       = "google-api-lambda-function.lambda_handler"
   runtime       = "python3.10"
   role          = aws_iam_role.lambda_exec.arn
   filename      = "lambda_function_payload.zip"
