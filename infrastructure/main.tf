@@ -1,17 +1,4 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 4.16"
-    }
-  }
 
-  required_version = ">= 1.2.0"
-}
-
-provider "aws" {
-  region  = "us-east-1"
-}
 
 resource "aws_dynamodb_table" "google-project-table" {
   name           = "google-project-table"
@@ -149,6 +136,3 @@ resource "aws_lambda_permission" "apigw_lambda" {
   source_arn    = "${aws_apigatewayv2_api.http_api.execution_arn}/*/*"
 }
 
-output "api_url" {
-  value = "${aws_apigatewayv2_api.http_api.api_endpoint}/"
-}

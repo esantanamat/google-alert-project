@@ -6,7 +6,7 @@ dynamodb = boto3.resource("dynamodb")
 table = dynamodb.Table('google-project-table')
 
 def lambda_handler(event, context):
-    print("EVENT:", json.dumps(event))  
+    
 
     method = event.get("requestContext", {}).get("http", {}).get("method")
     path = event.get("rawPath")
