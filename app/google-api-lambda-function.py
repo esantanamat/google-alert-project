@@ -11,7 +11,10 @@ def lambda_handler(event, context):
     method = event.get("requestContext", {}).get("http", {}).get("method")
     path = event.get("rawPath")
     headers = {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "Content-Type",
+        
     }
 
     try:

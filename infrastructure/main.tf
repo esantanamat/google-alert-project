@@ -106,6 +106,12 @@ resource "aws_lambda_function" "my_lambda" {
 resource "aws_apigatewayv2_api" "http_api" {
   name          = "MyHTTPAPI"
   protocol_type = "HTTP"
+
+  cors_configuration {
+    allow_headers = ["Content-Type"]
+    allow_methods = ["GET", "POST", "OPTIONS"]
+    allow_origins = ["*"]
+  }
 }
 
 resource "aws_apigatewayv2_integration" "lambda_integration" {
@@ -136,3 +142,51 @@ resource "aws_lambda_permission" "apigw_lambda" {
   source_arn    = "${aws_apigatewayv2_api.http_api.execution_arn}/*/*"
 }
 
+resource "aws_s3_bucket" "example" {
+  bucket = "enmanuel-s-test-bucket-125"
+
+  tags = {
+    Name        = "S3 Static Website Bucket"
+    Environment = "Dev"
+  }
+}
+
+resource "aws_s3_bucket_public_access_block" "example" {
+  bucket = aws_s3_bucket.example.id
+
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
+}
+
+resource "aws_s3_bucket_policy" "public_read" {
+  bucket = aws_s3_bucket.example.id
+  policy = data.aws_iam_policy_document.allow_access.json
+}
+
+data "aws_iam_policy_document" "allow_access" {
+  statement {
+    principals {
+      type        = "*"
+      identifiers = ["*"]
+    }
+
+    actions = [
+      "s3:GetObject",
+    
+    ]
+
+    resources = [
+      "${aws_s3_bucket.example.arn}/*",
+    ]
+  }
+}
+
+resource "aws_s3_bucket_website_configuration" "example" {
+  bucket = aws_s3_bucket.example.id
+
+  index_document {
+    suffix = "index.html"
+  }
+}
