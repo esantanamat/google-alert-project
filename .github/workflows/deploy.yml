@@ -56,6 +56,8 @@ jobs:
       - name: Package Lambda Function
         run: zip lambda_function_payload.zip ../app/google-api-lambda-function.py
         working-directory: ./infrastructure
+      - name: Upload to S3
+        run: aws s3 cp lambda_function_payload.zip s3://$BUCKET_TF_STATE/lambdas/lambda_function_payload.zip
 
       - name: Terraform apply
         id: apply
