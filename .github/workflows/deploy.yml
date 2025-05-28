@@ -35,6 +35,18 @@ jobs:
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.4.0
+      - name: Login to ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      - name: Build and push docker image to ecr
+        env: 
+            ECR_REGISTRY: ${{ steps.login-ecr.outputs.regisitry }}
+            ECR:REPOSITORY: google-lambda
+            IMAGE_TAG: latest
+        run: |
+            docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./app
+            docker push $ECR_REGISTRY/$ECR_REPOSITOY:$IMAGE_TAG
+
 
       - name: Terraform Init
         id: init
@@ -54,12 +66,7 @@ jobs:
         run: terraform plan -no-color -input=false
         continue-on-error: true
 
-      - name: Package Lambda Function
-        run: zip lambda_function_payload.zip ../app/google-api-lambda-function.py
-        working-directory: ./infrastructure
-      - name: Upload Lambda zip to S3
-        run: aws s3 cp lambda_function_payload.zip s3://$BUCKET_TF_STATE/lambdas/lambda_function_payload.zip
-        working-directory: ./infrastructure
+      
 
       - name: Terraform apply
         id: apply

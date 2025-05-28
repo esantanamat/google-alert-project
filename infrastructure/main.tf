@@ -96,12 +96,14 @@ resource "aws_iam_role_policy_attachment" "attach_putitem_policy" {
 
 resource "aws_lambda_function" "my_lambda" {
   function_name = "google-api-lambda-function"
-  handler       = "google-api-lambda-function.lambda_handler"
-  s3_bucket     = var.lambda_s3_bucket
-  s3_key        = "lambdas/lambda_function_payload.zip"
-  runtime       = "python3.10"
+  image_uri     = "${aws_ecr_repository.lambda.repository_url}:latest"
+  package_type  = "Image"
   role          = aws_iam_role.lambda_exec.arn
-  source_code_hash = filebase64sha256("lambda_function_payload.zip")
+  timeout       = 30
+}
+
+resource "aws_ecr_repository" "lambda" {
+  name = "google-lambda"
 }
 
 resource "aws_apigatewayv2_api" "http_api" {
