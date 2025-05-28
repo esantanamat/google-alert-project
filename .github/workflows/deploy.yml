@@ -28,11 +28,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Zip lambda function
-        run: zip lambda_function_payload.zip ./app/google-api-lambda-function.py
-      - name: Upload Lambda zip to s3
-        run: |
-            aws s3 cp lambda_function_payload.zip s3://$BUCKET_TF_STATE/lambdas/google-api-lambda.zip
+     
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
         with:
@@ -57,9 +53,4 @@ jobs:
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply
 
-      - name: Upload Frontend to S3 Static Site
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: |
-            aws s3 sync ./frontend s3://$AWS_FRONTEND_BUCKET/ --delete --acl public-read
-
-
+      
