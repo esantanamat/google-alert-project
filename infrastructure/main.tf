@@ -1,10 +1,10 @@
 
 
 resource "aws_dynamodb_table" "google-project-table" {
-  name         = "google-project-table"
-  billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "user_id"
-  range_key    = "destination_name"
+  name           = "google-project-table"
+  billing_mode   = "PAY_PER_REQUEST"
+  hash_key       = "user_id"
+  range_key      = "destination_name"
 
   attribute {
     name = "user_id"
@@ -43,7 +43,7 @@ resource "aws_dynamodb_table" "google-project-table" {
   #   enabled        = false
   # }
 
-
+ 
 
   tags = {
     Name        = "google-project-table"
@@ -67,8 +67,8 @@ resource "aws_iam_role" "lambda_exec" {
 }
 
 resource "aws_iam_policy" "dynamo_db_policy" {
-  name = "dynamo-db-put-policy"
-  policy = jsonencode({
+  name ="dynamo-db-put-policy"
+   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
       {
@@ -95,13 +95,13 @@ resource "aws_iam_role_policy_attachment" "attach_putitem_policy" {
 }
 
 resource "aws_lambda_function" "my_lambda" {
-  function_name    = "google-api-lambda-function"
-  handler          = "google-api-lambda-function.lambda_handler"
-  s3_bucket        = var.lambda_s3_bucket
-  s3_key           = "lambdas/lambda_function_payload.zip"
-  runtime          = "python3.10"
-  role             = aws_iam_role.lambda_exec.arn
-  filename         = "lambda_function_payload.zip"
+  function_name = "google-api-lambda-function"
+  handler       = "google-api-lambda-function.lambda_handler"
+  s3_bucket     = var.lambda_s3_bucket
+  s3_key        = "lambdas/lambda_function_payload.zip"
+  runtime       = "python3.10"
+  role          = aws_iam_role.lambda_exec.arn
+  filename      = "lambda_function_payload.zip"
   source_code_hash = filebase64sha256("lambda_function_payload.zip")
 }
 
@@ -176,8 +176,8 @@ data "aws_iam_policy_document" "allow_access" {
 
     actions = [
       "s3:GetObject",
-
-
+      "s3:ListObject"
+    
     ]
 
     resources = [

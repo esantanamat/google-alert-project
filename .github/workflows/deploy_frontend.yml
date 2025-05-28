@@ -24,8 +24,5 @@ jobs:
           AWS_FRONTEND_BUCKET: ${{ secrets.AWS_FRONTEND_BUCKET }}
         run: |
           aws s3 sync ./frontend s3://$AWS_FRONTEND_BUCKET/ --delete --acl public-read
-      - name: Zip lambda function
-        run: zip lambda_function_payload.zip ./app/google-api-lambda-function.py
-      - name: Upload Lambda zip to s3
-        run: |
-            aws s3 cp lambda_function_payload.zip s3://$BUCKET_TF_STATE/lambdas/google-api-lambda.zip
+          
+     

@@ -55,4 +55,6 @@ jobs:
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve
 
-      
+      - name: Package Lambda Function
+        run: zip lambda_function_payload.zip ../app/google-api-lambda.py
+        working-directory: ./infrastructure
