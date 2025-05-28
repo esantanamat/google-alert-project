@@ -101,7 +101,6 @@ resource "aws_lambda_function" "my_lambda" {
   s3_key        = "lambdas/lambda_function_payload.zip"
   runtime       = "python3.10"
   role          = aws_iam_role.lambda_exec.arn
-  filename      = "lambda_function_payload.zip"
   source_code_hash = filebase64sha256("lambda_function_payload.zip")
 }
 
