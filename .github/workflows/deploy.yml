@@ -28,6 +28,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: List infrastructure folder files
+        run: ls -la
      
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
@@ -51,6 +53,6 @@ jobs:
       - name: Terraform apply
         id: apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform apply
+        run: terraform apply -auto-approve
 
       
