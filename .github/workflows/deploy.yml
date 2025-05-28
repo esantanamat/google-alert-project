@@ -45,7 +45,7 @@ jobs:
             ECR_REPOSITORY: google-lambda
             IMAGE_TAG: latest
         run: |
-            docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./app
+            docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ../app
             docker push $ECR_REGISTRY/$ECR_REPOSITOY:$IMAGE_TAG
 
 
