@@ -1,11 +1,18 @@
+name: Destroy Infrastructure
+
 on:
-  workflow_dispatch:  
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: ./infrastructure
 
 jobs:
   destroy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Setup Terraform
