@@ -29,7 +29,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Zip lambda function
-        run: zip lambda_function_payload.zip ./app/google-api-lambda.py
+        run: zip lambda_function_payload.zip ./app/google-api-lambda-function.py
       - name: Upload Lambda zip to s3
         run: |
             aws s3 cp lambda_function_payload.zip s3://$BUCKET_TF_STATE/lambdas/google-api-lambda.zip
