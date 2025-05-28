@@ -29,8 +29,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: List infrastructure folder files
-        run: ls -la
      
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
