@@ -36,6 +36,14 @@ jobs:
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.4.0
+      - name: Ensure ECR repo exists
+        run: |
+            if ! aws ecr describe-repositories --repository-names google-lambda; then
+                aws ecr create-repository --repository-name google-lambda
+            else
+                echo "ECR repo already exists, skipping creation."
+            fi
+
       - name: Login to ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2

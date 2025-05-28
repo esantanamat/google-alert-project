@@ -103,9 +103,7 @@ resource "aws_lambda_function" "my_lambda" {
   timeout       = 30
 }
 
-resource "aws_ecr_repository" "lambda" {
-  name = "google-lambda"
-}
+
 
 resource "aws_apigatewayv2_api" "http_api" {
   name          = "MyHTTPAPI"
