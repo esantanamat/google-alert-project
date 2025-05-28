@@ -37,10 +37,10 @@ jobs:
           terraform_version: 1.4.0
       - name: Login to ECR
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+        uses: aws-actions/amazon-ecr-login@v2
       - name: Build and push docker image to ecr
         env: 
-            ECR_REGISTRY: ${{ steps.login-ecr.outputs.regisitry }}
+            ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
             ECR:REPOSITORY: google-lambda
             IMAGE_TAG: latest
         run: |
