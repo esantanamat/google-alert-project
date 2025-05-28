@@ -38,12 +38,14 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init \
+        run: |
+            terraform init \
             -backend-config="bucket=${{ secrets.BUCKET_TF_STATE }}" \
             -backend-config="key=terraform.tfstate" \
             -backend-config="region=us-east-1" \
             -backend-config="dynamodb_table=terraform-locks" \
             -backend-config="encrypt=true"
+
 
 
       - name: Terraform Format
