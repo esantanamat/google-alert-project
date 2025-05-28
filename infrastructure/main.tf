@@ -97,6 +97,8 @@ resource "aws_iam_role_policy_attachment" "attach_putitem_policy" {
 resource "aws_lambda_function" "my_lambda" {
   function_name = "google-api-lambda-function"
   handler       = "google-api-lambda-function.lambda_handler"
+  s3_bucket     = var.lambda_s3_bucket
+  s3_key        = "lambdas/lambda_function_payload.zip"
   runtime       = "python3.10"
   role          = aws_iam_role.lambda_exec.arn
   filename      = "lambda_function_payload.zip"
