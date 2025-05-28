@@ -64,7 +64,9 @@ jobs:
       - name: Package Lambda Function
         run: zip lambda_function_payload.zip ../app/google-api-lambda-function.py
         working-directory: ./infrastructure
-
+      - name: Terraform destroy
+        run: terraform destroy
+        
       - name: Terraform apply
         id: apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
