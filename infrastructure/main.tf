@@ -75,7 +75,7 @@ resource "aws_iam_policy" "dynamo_db_policy" {
         Effect = "Allow",
         Action = [
           "dynamodb:PutItem",
-          "dynamodb:GetItem"
+        
     
         ],
         Resource = aws_dynamodb_table.google-project-table.arn
