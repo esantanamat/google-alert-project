@@ -96,6 +96,11 @@ resource "aws_iam_role_policy_attachment" "attach_putitem_policy" {
   policy_arn = aws_iam_policy.dynamo_db_policy.arn
 }
 
+resource "aws_ecr_repository" "lambda" {
+  name = "google-lambda"
+}
+
+
 resource "aws_lambda_function" "my_lambda" {
   function_name = "google-api-lambda-function"
   image_uri     = "${aws_ecr_repository.lambda.repository_url}:latest"
