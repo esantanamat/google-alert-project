@@ -38,14 +38,7 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: |
-            terraform init \
-            -backend-config="bucket=${{ secrets.BUCKET_TF_STATE }}" \
-            -backend-config="key=terraform.tfstate" \
-            -backend-config="region=us-east-1" \
-            -backend-config="dynamodb_table=terraform-locks" \
-            -backend-config="encrypt=true"
-
+        run: terraform init
 
 
       - name: Terraform Format
@@ -64,9 +57,10 @@ jobs:
       - name: Package Lambda Function
         run: zip lambda_function_payload.zip ../app/google-api-lambda-function.py
         working-directory: ./infrastructure
-      - name: Terraform destroy
-        run: terraform destroy
-        
+      - name: Upload Lambda zip to S3
+        run: aws s3 cp lambda_function_payload.zip s3://$BUCKET_TF_STATE/lambdas/lambda_function_payload.zip
+        working-directory: ./infrastructure
+
       - name: Terraform apply
         id: apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
