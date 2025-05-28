@@ -86,6 +86,30 @@ resource "aws_iam_policy" "dynamo_db_policy" {
 
 }
 
+resource "aws_iam_policy" "ecr_policy" {
+  name = "lambda-ecr-policy"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = "ecr:GetAuthorizationToken",
+        Resource = "*"
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:BatchGetImage",
+          "ecr:BatchCheckLayerAvailability"
+        ],
+        Resource = "arn:aws:ecr:us-east-1:463470969308:repository/google-lambda"
+      }
+    ]
+  })
+}
+
+
 
 
 resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
@@ -95,6 +119,10 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
 resource "aws_iam_role_policy_attachment" "attach_putitem_policy" {
   role       = aws_iam_role.lambda_exec.name
   policy_arn = aws_iam_policy.dynamo_db_policy.arn
+}
+resource "aws_iam_role_policy_attachment" "attach_ecr_policy" {
+  role = aws_iam_role.lambda_exec.name
+  policy_arn = aws_iam_policy.ecr_policy.arn
 }
 
 resource "aws_ecr_repository" "lambda" {
