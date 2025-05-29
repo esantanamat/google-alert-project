@@ -26,6 +26,10 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
+      - name: Empty repo
+        run: |
+          aws ecr batch-delete-image --repository-name google-lambda --image-ids imageDigest=imageDigest
 
       - name: Terraform Destroy
         run: terraform destroy -auto-approve
+      
