@@ -26,9 +26,35 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
-      - name: Empty repo
+        
+      - name: Empty ECR repository
+        env:
+          AWS_REGION: us-east-1
+          ECR_REPO: google-lambda
         run: |
-          aws ecr batch-delete-image --repository-name google-lambda --image-ids imageDigest=imageDigest
+          image_digests=$(aws ecr list-images \
+            --region $AWS_REGION \
+            --repository-name $ECR_REPO \
+            --query 'imageIds[*].imageDigest' \
+            --output text)
+
+         
+          if [ -z "$image_digests" ]; then
+            echo "No images to delete."
+            exit 0
+          fi
+
+          
+          delete_json=$(for digest in $image_digests; do
+            echo -n "{\"imageDigest\":\"$digest\"},"
+          done | sed 's/,$//') # remove trailing comma
+
+         
+          aws ecr batch-delete-image \
+            --region $AWS_REGION \
+            --repository-name $ECR_REPO \
+            --image-ids "[$delete_json]"
+
 
       - name: Terraform Destroy
         run: terraform destroy -auto-approve
