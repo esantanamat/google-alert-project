@@ -12,7 +12,7 @@ document.getElementById('notificationForm').addEventListener('submit', async (ev
     };
 
     try {
-        const response = await fetch('https://uyyibl14yc.execute-api.us-east-1.amazonaws.com/', {
+        const response = await fetch('https://3yq9qqzl9l.execute-api.us-east-1.amazonaws.com/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(formData)
