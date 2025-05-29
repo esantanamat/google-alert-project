@@ -74,7 +74,8 @@ resource "aws_iam_policy" "dynamo_db_policy" {
       {
         Effect = "Allow",
         Action = [
-          "dynamodb:PutItem"
+          "dynamodb:PutItem",
+          "dynamodb:GetItem"
         
     
         ],
