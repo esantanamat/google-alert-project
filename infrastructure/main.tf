@@ -191,9 +191,9 @@ resource "aws_s3_bucket" "example" {
 resource "aws_s3_bucket_public_access_block" "example" {
   bucket = aws_s3_bucket.example.id
 
-  block_public_acls       = false
-  block_public_policy     = false
-  ignore_public_acls      = false
+  block_public_acls       = true
+  block_public_policy     = false  
+  ignore_public_acls      = true
   restrict_public_buckets = false
 }
 
@@ -201,9 +201,11 @@ resource "aws_s3_bucket_policy" "public_read" {
   bucket = aws_s3_bucket.example.id
   policy = data.aws_iam_policy_document.allow_access.json
 }
-
 data "aws_iam_policy_document" "allow_access" {
   statement {
+    sid       = "PublicReadGetObject"
+    effect    = "Allow"
+
     principals {
       type        = "*"
       identifiers = ["*"]
@@ -211,8 +213,6 @@ data "aws_iam_policy_document" "allow_access" {
 
     actions = [
       "s3:GetObject",
-      
-    
     ]
 
     resources = [
