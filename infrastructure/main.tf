@@ -184,7 +184,7 @@ resource "aws_s3_bucket" "example" {
 
   tags = {
     Name        = "S3 Static Website Bucket"
-    Environment = "Devz"
+    Environment = "Dev"
   }
 }
 
