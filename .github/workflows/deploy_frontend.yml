@@ -20,6 +20,6 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_FRONTEND_BUCKET: ${{ secrets.AWS_FRONTEND_BUCKET }}
         run: |
-          aws s3 sync ../../frontend s3://$AWS_FRONTEND_BUCKET/ --delete
+          aws s3 sync ./frontend s3://$AWS_FRONTEND_BUCKET/ --delete
 
       
