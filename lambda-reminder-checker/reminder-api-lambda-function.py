@@ -9,6 +9,7 @@ SNS_TOPIC_ARN = 'arn:aws:sns:us-east-1:463470969308:arriveby-alert-sns'
 
 
 def lambda_handler(event, context):
+    print("Lambda invoked!")
     table = dynamodb.Table(TABLE_NAME)
     now = datetime.now(timezone.utc)
     one_hour_later = now + timedelta(hours=1)
