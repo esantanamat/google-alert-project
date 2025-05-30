@@ -198,6 +198,8 @@ resource "aws_s3_bucket_public_access_block" "example" {
 resource "aws_s3_bucket_policy" "public_read" {
   bucket = aws_s3_bucket.example.id
   policy = data.aws_iam_policy_document.allow_access.json
+
+  depends_on = [aws_s3_bucket_public_access_block.example]
 }
 data "aws_iam_policy_document" "allow_access" {
   statement {
