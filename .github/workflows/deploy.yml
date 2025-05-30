@@ -24,7 +24,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: ./infrastructure
+        working-directory: ./infrastructure/main
 
     steps:
       - name: Checkout code
