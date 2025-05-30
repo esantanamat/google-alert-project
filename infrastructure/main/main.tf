@@ -117,6 +117,7 @@ resource "aws_iam_policy" "dynamo_db_get_policy" {
         Effect = "Allow",
         Action = [
           "dynamodb:GetItem",
+          "dynamodb:Scan"
 
         
     
