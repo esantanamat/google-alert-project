@@ -190,8 +190,15 @@ resource "aws_lambda_function" "reminder_api_lambda" {
   function_name = "reminder-api-lambda-function"
   image_uri     = "${aws_ecr_repository.lambda.repository_url}:reminder-checker-latest"
   package_type  = "Image"
-  role          = aws_iam_role.lambda_exec.arn
+  role          = aws_iam_role.reminder_exec.arn
   timeout       = 30
+}
+
+#toggle this to trigger the ci/cd pipeline for terraform when you make retries, without affecting infrastructure
+resource "null_resource" "dummy_trigger" {
+  provisioner "local-exec" {
+    command = "echo 'Triggered by dummy resource'"
+  }
 }
 
 #need a role for the reminder api lambda, should be able to scan dynamodb so I think getitem
