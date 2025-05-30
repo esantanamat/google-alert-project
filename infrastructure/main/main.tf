@@ -1,4 +1,13 @@
+data "terraform_remote_state" "init" {
+  backend = "s3"
 
+  config = {
+    bucket         = "your-bucket-name"
+    key            = "init/terraform.tfstate" # make sure this matches the key in init/backend.tf
+    region         = "us-east-1"
+    dynamodb_table = "your-lock-table"
+  }
+}
 
 resource "aws_dynamodb_table" "google-project-table" {
   name           = "google-project-table"
@@ -56,7 +65,7 @@ resource "aws_dynamodb_table" "google-project-table" {
 
 resource "aws_lambda_function" "my_lambda" {
   function_name = "google-api-lambda-function"
-  image_uri     = "${aws_ecr_repository.lambda.repository_url}:http-handler-latest"
+  image_uri     = "${data.terraform_remote_state.init.outputs.ecr_repository_url}:http-handler-latest"
   package_type  = "Image"
   role          = aws_iam_role.lambda_exec.arn
   timeout       = 30
@@ -64,7 +73,7 @@ resource "aws_lambda_function" "my_lambda" {
 
 resource "aws_lambda_function" "reminder_api_lambda" {
   function_name = "reminder-api-lambda-function"
-  image_uri     = "${aws_ecr_repository.lambda.repository_url}:reminder-checker-latest"
+  image_uri     = "${data.terraform_remote_state.init.outputs.ecr_repository_url}:reminder-checker-latest"
   package_type  = "Image"
   role          = aws_iam_role.reminder_exec.arn
   timeout       = 30
@@ -243,3 +252,82 @@ resource "aws_sns_topic" "user_updates" {
 EOF
 }
 
+
+resource "aws_iam_role" "lambda_exec" {
+  name = "lambda_exec_role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Action = "sts:AssumeRole",
+      Effect = "Allow",
+      Principal = {
+        Service = "lambda.amazonaws.com"
+      }
+    }]
+  })
+}
+
+resource "aws_iam_role" "reminder_exec" {
+  name = "lambda_reminder_exec_role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Action = "sts:AssumeRole",
+      Effect = "Allow",
+      Principal = {
+        Service = "lambda.amazonaws.com"
+      }
+    }]
+  })
+}
+
+
+
+
+resource "aws_iam_policy" "ecr_policy" {
+  name = "lambda-ecr-policy"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = "ecr:GetAuthorizationToken",
+        Resource = "*"
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:BatchGetImage",
+          "ecr:BatchCheckLayerAvailability"
+        ],
+        Resource = "arn:aws:ecr:us-east-1:463470969308:repository/google-lambda"
+      }
+    ]
+  })
+}
+
+
+
+
+resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
+  role       = aws_iam_role.lambda_exec.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
+resource "aws_iam_role_policy_attachment" "reminder_lambda_basic_execution" {
+  role       = aws_iam_role.reminder_exec.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
+resource "aws_iam_role_policy_attachment" "attach_ecr_policy_google_api_lambda" {
+  role = aws_iam_role.lambda_exec.name
+  policy_arn = aws_iam_policy.ecr_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "attach_ecr_policy_reminder_api_lambda" {
+  role = aws_iam_role.reminder_exec.name
+  policy_arn = aws_iam_policy.ecr_policy.arn
+}
