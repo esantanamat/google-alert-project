@@ -228,3 +228,36 @@ resource "aws_s3_bucket_website_configuration" "example" {
     suffix = "index.html"
   }
 }
+
+#beginning cloudevents, sns, and lambda function implementation
+
+resource "aws_sns_topic" "user_updates" {
+  name            = "arriveby-alert-sns"
+  delivery_policy = <<EOF
+{
+  "http": {
+    "defaultHealthyRetryPolicy": {
+      "minDelayTarget": 20,
+      "maxDelayTarget": 20,
+      "numRetries": 3,
+      "numMaxDelayRetries": 0,
+      "numNoDelayRetries": 0,
+      "numMinDelayRetries": 0,
+      "backoffFunction": "linear"
+    },
+    "disableSubscriptionOverrides": false,
+    "defaultThrottlePolicy": {
+      "maxReceivesPerSecond": 1
+    }
+  }
+}
+EOF
+}
+
+resource "aws_lambda_function" "reminder_api_lambda" {
+  function_name = "reminder-api-lambda-function"
+  image_uri     = "${aws_ecr_repository.lambda.repository_url}:latest"
+  package_type  = "Image"
+  role          = aws_iam_role.lambda_exec.arn
+  timeout       = 30
+}

@@ -8,7 +8,7 @@ variable "region" {
 variable "environment" {
   description = "AWS resources environment"
   type        = string
-  default     = "test"
+  default     = "dev"
 }
 
 variable "lambda_s3_bucket" {
