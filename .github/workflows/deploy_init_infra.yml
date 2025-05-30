@@ -53,8 +53,8 @@ jobs:
             FIRST_IMAGE_TAG: http-handler-latest
             SECOND_IMAGE_TAG: reminder-checker-latest
         run: |
-            docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$FIRST_IMAGE_TAG ../lambda-http-handler
+            docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$FIRST_IMAGE_TAG ../../lambda-http-handler
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$FIRST_IMAGE_TAG
-            docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$SECOND_IMAGE_TAG ../lambda-reminder-checker
+            docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$SECOND_IMAGE_TAG ../../lambda-reminder-checker
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$SECOND_IMAGE_TAG
 
