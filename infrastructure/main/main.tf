@@ -79,7 +79,55 @@ resource "aws_lambda_function" "reminder_api_lambda" {
 
 #need a role for the reminder api lambda, should be able to scan dynamodb so I think getitem
 
+resource "aws_iam_policy" "dynamo_db_policy" {
+  name ="dynamo-db-put-policy"
+   policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "dynamodb:PutItem",
 
+        
+    
+        ],
+        Resource = aws_dynamodb_table.google-project-table.arn
+      }
+    ]
+  })
+
+}
+
+resource "aws_iam_policy" "dynamo_db_get_policy" {
+  name ="dynamo-db-get-policy"
+   policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "dynamodb:GetItem",
+
+        
+    
+        ],
+        Resource = aws_dynamodb_table.google-project-table.arn
+      }
+    ]
+  })
+
+}
+
+resource "aws_iam_role_policy_attachment" "attach_putitem_policy" {
+  role       = aws_iam_role.lambda_exec.name
+  policy_arn = aws_iam_policy.dynamo_db_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "attach_getitem_policy" {
+  role       = aws_iam_role.reminder_exec.name
+  policy_arn = aws_iam_policy.dynamo_db_get_policy.arn
+}
 
 resource "aws_apigatewayv2_api" "http_api" {
   name          = "MyHTTPAPI"
