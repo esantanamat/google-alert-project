@@ -37,7 +37,7 @@ jobs:
       - name: Ensure ECR repo exists
         run: |
             if ! aws ecr describe-repositories --repository-names google-lambda; then
-                aws ecr create-repository --repository-name google-lambda \
+                aws ecr create-repository --repository-name google-lambda 
                 terraform import aws_ecr_repository.lambda google-lambda
             else
                 echo "ECR repo already exists, skipping creation."
