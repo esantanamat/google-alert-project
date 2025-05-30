@@ -58,7 +58,7 @@ jobs:
         env: 
           AWS_REGION: us-east-1
         run: |
-          aws s3 rm s3://enmanuel-s-test-bucket-125/doc --recursive
+          aws s3 rm s3://enmanuel-s-test-bucket-125 --recursive
       - name: Terraform Destroy
         run: terraform destroy -auto-approve
       
