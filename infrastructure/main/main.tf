@@ -2,10 +2,10 @@ data "terraform_remote_state" "init" {
   backend = "s3"
 
   config = {
-    bucket         = "your-bucket-name"
-    key            = "init/terraform.tfstate" # make sure this matches the key in init/backend.tf
+    bucket         = "amzn-s3-dev-bucket-es12452"
+    key            = "init/terraform.tfstate" 
     region         = "us-east-1"
-    dynamodb_table = "your-lock-table"
+    dynamodb_table = "terraform-locks"
   }
 }
 
