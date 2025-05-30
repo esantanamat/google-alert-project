@@ -1,4 +1,4 @@
-name: Destroy Init Infrastructure
+name: Deploy Init Infrastructure
 
 on:
   workflow_dispatch:
