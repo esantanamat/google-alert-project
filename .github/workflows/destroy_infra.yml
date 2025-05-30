@@ -54,8 +54,11 @@ jobs:
             --region $AWS_REGION \
             --repository-name $ECR_REPO \
             --image-ids "[$delete_json]"
-
-
+      - name: Empty S3 Bucket
+        env: 
+          AWS_REGION: us-east-1
+        run: |
+          aws s3 rm s3://enmanuel-s-test-bucket-125/doc --recursive
       - name: Terraform Destroy
         run: terraform destroy -auto-approve
       
