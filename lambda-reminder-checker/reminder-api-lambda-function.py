@@ -10,7 +10,7 @@ SNS_TOPIC_ARN = 'arn:aws:sns:us-east-1:463470969308:arriveby-alert-sns'
 
 def lambda_handler(event, context):
     table = dynamodb.Table(TABLE_NAME)
-    now = datetime.now(timezone.est)
+    now = datetime.now(timezone.utc)
     one_hour_later = now + timedelta(hours=1)
 
     response = table.scan()
@@ -22,4 +22,4 @@ def lambda_handler(event, context):
         print(now)
         print(one_hour_later)
 
-    
+#3.13 is latest supported runtime for lambda
