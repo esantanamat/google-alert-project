@@ -80,11 +80,11 @@ resource "aws_lambda_function" "reminder_api_lambda" {
 }
 
 #toggle this to trigger the ci/cd pipeline for terraform when you make retries, without affecting infrastructure
-resource "null_resource" "dummy_trigger" {
-  provisioner "local-exec" {
-    command = "echo 'Triggered by dummy resource'"
-  }
-}
+# resource "null_resource" "dummy_trigger" {
+#   provisioner "local-exec" {
+#     command = "echo 'Triggered by dummy resource'"
+#   }
+# }
 
 #need a role for the reminder api lambda, should be able to scan dynamodb so I think getitem
 
