@@ -9,7 +9,7 @@ data "terraform_remote_state" "init" {
   }
 }
 
-resource "aws_dynamodb_table" "google-project-table" {
+resource "aws_dynamodb_table" "google_project_table" {
   name           = "google-project-table"
   billing_mode   = "PAY_PER_REQUEST"
   hash_key       = "user_id"
@@ -55,7 +55,6 @@ resource "aws_dynamodb_table" "google-project-table" {
  
 
   tags = {
-    Name        = "google-project-table"
     Environment = "dev"
   }
 }
@@ -101,7 +100,7 @@ resource "aws_iam_policy" "dynamo_db_policy" {
         
     
         ],
-        Resource = aws_dynamodb_table.google-project-table.arn
+        Resource = aws_dynamodb_table.google_project_table.arn
       }
     ]
   })
@@ -122,7 +121,7 @@ resource "aws_iam_policy" "dynamo_db_get_policy" {
         
     
         ],
-        Resource = aws_dynamodb_table.google-project-table.arn
+        Resource = aws_dynamodb_table.google_project_table.arn
       }
     ]
   })
