@@ -164,12 +164,12 @@ resource "aws_iam_role_policy_attachment" "attach_getitem_policy" {
   policy_arn = aws_iam_policy.dynamo_db_get_policy.arn
 }
 
-resource "aws_iam_role_policy_attachment" "attach_ecr_policy" {
+resource "aws_iam_role_policy_attachment" "attach_ecr_policy_google_api_lambda" {
   role = aws_iam_role.lambda_exec.name
   policy_arn = aws_iam_policy.ecr_policy.arn
 }
 
-resource "aws_iam_role_policy_attachment" "attach_ecr_policy" {
+resource "aws_iam_role_policy_attachment" "attach_ecr_policy_reminder_api_lambda" {
   role = aws_iam_role.reminder_exec.name
   policy_arn = aws_iam_policy.ecr_policy.arn
 }
@@ -312,10 +312,3 @@ resource "aws_sns_topic" "user_updates" {
 EOF
 }
 
-resource "aws_lambda_function" "reminder_api_lambda" {
-  function_name = "reminder-api-lambda-function"
-  image_uri     = "${aws_ecr_repository.lambda.repository_url}:latest"
-  package_type  = "Image"
-  role          = aws_iam_role.lambda_exec.arn
-  timeout       = 30
-}
