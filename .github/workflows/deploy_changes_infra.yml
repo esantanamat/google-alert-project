@@ -11,7 +11,7 @@ on:
       - main
 
 env:
-  TF_LOG: INFO
+  TF_LOG: WARN
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   BUCKET_TF_STATE: ${{ secrets.BUCKET_TF_STATE }}
@@ -29,20 +29,21 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      
+  
 
-     
       - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v2
+        uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.4.0
+          terraform_version: 1.12.1
+
+
       - name: Login to ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
         
+
       - name: Update Lambda function with new image
         env:
-          AWS_REGION: us-east-1  
           LAMBDA_FUNCTION_NAME: reminder-api-lambda-function
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: google-lambda
@@ -52,9 +53,10 @@ jobs:
             --region $AWS_REGION \
             --function-name $LAMBDA_FUNCTION_NAME \
             --image-uri $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+
       - name: Update second lambda function with new image
         env:
-          AWS_REGION: us-east-1  
           LAMBDA_FUNCTION_NAME: google-api-lambda-function
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: google-lambda
@@ -67,21 +69,19 @@ jobs:
 
       
       - name: Terraform Init
-        id: init
         run: terraform init
     
      
       - name: Terraform Format
-        id: fmt
         run: terraform fmt 
 
+
       - name: Terraform Plan
-        id: plan
         run: terraform plan -no-color -input=false
         continue-on-error: true
 
+        
       - name: Terraform apply
-        id: apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve
       

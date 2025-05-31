@@ -21,12 +21,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.12.1
+
 
       - name: Terraform Init
         run: terraform init
         
+
       - name: Empty ECR repository
         env:
           AWS_REGION: us-east-1
@@ -54,6 +58,8 @@ jobs:
             --region $AWS_REGION \
             --repository-name $ECR_REPO \
             --image-ids "[$delete_json]"
+
+
       - name: Empty S3 Bucket
         env: 
           AWS_REGION: us-east-1
@@ -64,6 +70,8 @@ jobs:
             echo "Bucket is created, now deleting all contents..."
             aws s3 rm s3://enmanuel-s-test-bucket-125 --recursive
           fi
+
+          
       - name: Terraform Destroy
         run: terraform destroy -auto-approve
       
