@@ -36,6 +36,10 @@ jobs:
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.4.0
+      - name: Login to ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+        
       - name: Update Lambda function with new image
         env:
           AWS_REGION: us-east-1  
