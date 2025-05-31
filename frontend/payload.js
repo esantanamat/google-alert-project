@@ -11,8 +11,10 @@ document.getElementById('notificationForm').addEventListener('submit', async (ev
         destination_address: document.getElementById('destination_address').value,
     };
 
+    const API_GATEWAY_URL = "%%API_GATEWAY_URL%%";
+
     try {
-        const response = await fetch('https://mvs7lma0tg.execute-api.us-east-1.amazonaws.com/', {
+        const response = await fetch(`${API_GATEWAY_URL}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(formData)

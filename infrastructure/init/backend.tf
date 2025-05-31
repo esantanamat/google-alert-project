@@ -1,4 +1,3 @@
-
 terraform {
   backend "s3" {
     bucket         = "amzn-s3-dev-bucket-es12452"

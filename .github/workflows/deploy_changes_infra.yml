@@ -34,7 +34,7 @@ jobs:
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.12.1
+          terraform_version: latest
 
 
       - name: Login to ECR
@@ -85,3 +85,12 @@ jobs:
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve
       
+      - name: Get API Gateway URL from Terraform output
+        run: |
+          echo "API_GATEWAY_URL=$(terraform output -raw api_gateway_invoke_url)" >> $GITHUB_ENV
+        working-directory: ./infrastructure/main
+
+        
+      - name: Replace API URL placeholder in frontend JS
+        run: |
+          sed -i "s|%%API_GATEWAY_URL%%|$API_GATEWAY_URL|g" ../../frontend/payload.js

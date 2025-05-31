@@ -68,6 +68,7 @@ resource "aws_lambda_function" "my_lambda" {
   package_type  = "Image"
   role          = aws_iam_role.lambda_exec.arn
   timeout       = 30
+  
 }
 
 resource "aws_lambda_function" "reminder_api_lambda" {
