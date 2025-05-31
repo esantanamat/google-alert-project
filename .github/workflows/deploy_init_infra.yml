@@ -3,7 +3,7 @@ name: Deploy Init Infrastructure, and Frontend
 on:
   push:
     paths:
-      - 'infrastructure/**'
+      - 'frontend/**'
   workflow_dispatch:
 env:
   TF_LOG: INFO
@@ -14,7 +14,7 @@ env:
 
 jobs:
   deploy-frontend:
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -29,7 +29,7 @@ jobs:
 
       
   terraform:
-    if: github.event_name == 'push'
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     name: "Terraform change management"
     defaults:
