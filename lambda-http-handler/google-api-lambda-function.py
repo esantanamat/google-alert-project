@@ -41,6 +41,11 @@ def lambda_handler(event, context):
                 })
             }
 
+        elif method == "GET" and path == "/":
+            return { "statusCode": 200,
+                    "headers": headers,
+                "body": json.dumps({"message": "super secret test message >:)"})
+            }
         else:
             return {
                 "statusCode": 404,

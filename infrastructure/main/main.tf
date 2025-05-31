@@ -144,7 +144,7 @@ resource "aws_apigatewayv2_api" "http_api" {
 
   cors_configuration {
     allow_headers = ["Content-Type"]
-    allow_methods = ["GET", "POST", "OPTIONS"]
+    allow_methods = ["POST", "GET", "OPTIONS"]
     allow_origins = ["*"]
   }
 }
@@ -157,11 +157,18 @@ resource "aws_apigatewayv2_integration" "lambda_integration" {
   payload_format_version = "2.0"
 }
 
-resource "aws_apigatewayv2_route" "default_route" {
+resource "aws_apigatewayv2_route" "post_route" {
   api_id    = aws_apigatewayv2_api.http_api.id
   route_key = "POST /"
   target    = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
 }
+
+resource "aws_apigatewayv2_route" "get_route" {
+  api_id    = aws_apigatewayv2_api.http_api.id
+  route_key = "GET /"
+  target    = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
+}
+
 
 resource "aws_apigatewayv2_stage" "default_stage" {
   api_id      = aws_apigatewayv2_api.http_api.id
