@@ -37,7 +37,7 @@ def lambda_handler(event, context):
                 "statusCode": 200,
                 "headers": headers,
                 "body": json.dumps({
-                    "message": "Item has been added via POST route",
+                    "message": "Item has been added via POST route, test 123",
                     "item": body
                 })
             }
