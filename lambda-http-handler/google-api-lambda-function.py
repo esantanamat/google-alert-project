@@ -16,6 +16,7 @@ def lambda_handler(event, context):
         "Access-Control-Allow-Headers": "Content-Type",
         
     }
+    
 
     try:
       
@@ -41,7 +42,7 @@ def lambda_handler(event, context):
                 })
             }
 
-        elif method == "GET":
+        elif method == "GET" and path == "/":
             return { "statusCode": 200,
                     "headers": headers,
                 "body": json.dumps({"message": "super secret test message >:)"})
@@ -50,7 +51,7 @@ def lambda_handler(event, context):
             return {
                 "statusCode": 404,
                 "headers": headers,
-                "body": json.dumps({"error": f"No matching route for {method} {path}"})
+                "body": json.dumps({"error": f"No matching route for method: {method} , path: {path}"})
             }
 
     except Exception as e:
