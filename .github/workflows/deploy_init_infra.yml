@@ -1,6 +1,9 @@
-name: Deploy Init Infrastructure
+name: Deploy Init Infrastructure, and Frontend
 
 on:
+  push:
+    paths:
+      - 'infrastructure/**'
   workflow_dispatch:
 env:
   TF_LOG: INFO
@@ -9,12 +12,24 @@ env:
   BUCKET_TF_STATE: ${{ secrets.BUCKET_TF_STATE }}
   AWS_REGION: us-east-1
 
-defaults:
-  run:
-    working-directory: ./infrastructure/init
-
 jobs:
+  deploy-frontend:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Sync frontend to S3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_FRONTEND_BUCKET: ${{ secrets.AWS_FRONTEND_BUCKET }}
+        run: |
+          aws s3 sync ./frontend s3://$AWS_FRONTEND_BUCKET/ --delete
+
+      
   terraform:
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     name: "Terraform change management"
     defaults:
@@ -34,10 +49,6 @@ jobs:
         run: |
           aws s3 sync ../../frontend s3://$AWS_FRONTEND_BUCKET/ --delete
 
-          
-      
-
-     
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
         with:
@@ -64,4 +75,3 @@ jobs:
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$FIRST_IMAGE_TAG
             docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$SECOND_IMAGE_TAG ../../lambda-reminder-checker
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$SECOND_IMAGE_TAG
-
