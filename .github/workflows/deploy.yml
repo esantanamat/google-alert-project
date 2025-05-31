@@ -36,6 +36,31 @@ jobs:
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.4.0
+      - name: Update Lambda function with new image
+        env:
+          AWS_REGION: us-east-1  
+          LAMBDA_FUNCTION_NAME: reminder-api-lambda-function
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: google-lambda
+          IMAGE_TAG: reminder-checker-latest
+        run: |
+          aws lambda update-function-code \
+            --region $AWS_REGION \
+            --function-name $LAMBDA_FUNCTION_NAME \
+            --image-uri $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+      - name: Update second lambda function with new image
+        env:
+          AWS_REGION: us-east-1  
+          LAMBDA_FUNCTION_NAME: google-api-lambda-function
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: google-lambda
+          IMAGE_TAG: http-handler-latest
+        run: |
+          aws lambda update-function-code \
+              --region $AWS_REGION \
+              --function-name $LAMBDA_FUNCTION_NAME \
+              --image-uri $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
       
       - name: Terraform Init
         id: init
