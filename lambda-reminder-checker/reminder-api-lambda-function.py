@@ -23,5 +23,3 @@ def lambda_handler(event, context):
         print(now)
         print(one_hour_later)
     
-
-#3.13 is latest supported runtime for lambda
