@@ -13,8 +13,9 @@ document.getElementById('notificationForm').addEventListener('submit', async (ev
 
     try {
         const config = await fetch('config.json').then(res => res.json());
-        const API_GATEWAY_URL = config.api_url;
 
+        const API_GATEWAY_URL = config.api_url;
+        console.log(API_GATEWAY_URL)
         const response = await fetch(`${API_GATEWAY_URL}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
