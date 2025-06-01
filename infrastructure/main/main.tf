@@ -205,29 +205,19 @@ resource "aws_s3_bucket_public_access_block" "example" {
 
 resource "aws_s3_bucket_policy" "public_read" {
   bucket = aws_s3_bucket.example.id
-  policy = data.aws_iam_policy_document.allow_access.json
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Effect    = "Allow",
+      Principal = "*",
+      Action    = "s3:GetObject",
+      Resource  = "${aws_s3_bucket.example.arn}/*"
+    }]
+  })
 
   depends_on = [aws_s3_bucket_public_access_block.example]
 }
-data "aws_iam_policy_document" "allow_access" {
-  statement {
-    sid       = "PublicReadGetObject"
-    effect    = "Allow"
 
-    principals {
-      type        = "*"
-      identifiers = ["*"]
-    }
-
-    actions = [
-      "s3:GetObject",
-    ]
-
-    resources = [
-      "${aws_s3_bucket.example.arn}/*",
-    ]
-  }
-}
 
 resource "aws_s3_bucket_website_configuration" "example" {
   bucket = aws_s3_bucket.example.id
