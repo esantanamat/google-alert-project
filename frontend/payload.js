@@ -11,9 +11,10 @@ document.getElementById('notificationForm').addEventListener('submit', async (ev
         destination_address: document.getElementById('destination_address').value,
     };
 
-    const API_GATEWAY_URL = "%%API_GATEWAY_URL%%";
-
     try {
+        const config = await fetch('config.json').then(res => res.json());
+        const API_GATEWAY_URL = config.api_url;
+
         const response = await fetch(`${API_GATEWAY_URL}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

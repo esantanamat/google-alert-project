@@ -91,6 +91,10 @@ jobs:
         working-directory: ./infrastructure/main
 
 
-      - name: Replace API URL placeholder in frontend JS
+      - name: Generate and upload config.json to dynamically reference api gateway url
+        env:
+          AWS_FRONTEND_BUCKET: ${{ secrets.AWS_FRONTEND_BUCKET }}
         run: |
-          sed -i "s|%%API_GATEWAY_URL%%|$API_GATEWAY_URL|g" ../../frontend/payload.js
+          API_URL=$(terraform output -raw api_url)
+          echo "{\"api_url\": \"$API_URL\"}" > config.json
+          aws s3 cp config.json s3://$AWS_FRONTEND_BUCKET/config.json 
