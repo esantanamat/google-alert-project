@@ -1,6 +1,7 @@
 import boto3
 from datetime import datetime, timedelta, timezone
 
+
 dynamodb = boto3.resource('dynamodb')
 sns = boto3.resource('sns')
 
@@ -26,7 +27,7 @@ def lambda_handler(event, context):
             within_next_hour = now <= reminder_time <= one_hour_later
             if within_next_hour:
                 print(f'it is within the next hour ${id}')
-                #implement query to fetch the travel time with Google API here, then trigger the sns queue? might use alternative 
+                #better to invoke another labmda function that handles the google api call
             else:
                 continue
         else:
