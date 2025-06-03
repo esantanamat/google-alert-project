@@ -184,7 +184,7 @@ resource "aws_apigatewayv2_api" "http_api" {
     allow_methods = ["POST", "OPTIONS"]
     allow_origins = [
       "https://enmanuel-s-test-bucket-125.s3.us-east-1.amazonaws.com",
-      "chrome-extension://fhbjgbiflinjbdggehcddcbncdddomop" # for Postman
+       
     ]
   }
 }
