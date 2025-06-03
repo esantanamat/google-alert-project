@@ -21,7 +21,8 @@ def lambda_handler(event, context):
         id = item.get('user_id')
         one_time_toggle = item.get('is_one_time')
         if one_time_toggle == 'yes':
-            reminder_time = item.get('arrival_time')
+            reminder_time = datetime.strptime(item.get('arrival_time'), '%H:%M:%S')
+
             if not reminder_time:
                 continue
             within_next_hour =  nowhformat <= reminder_time <= one_hour_later_hformat
@@ -32,7 +33,7 @@ def lambda_handler(event, context):
             else:
                 continue
         else:
-            reminder_time = item.get('arrival_datetime')
+            reminder_time = datetime.strptime(item.get('arrival_datetime'), "%Y-%m-%dT%H:%M")
             if not reminder_time:
                 continue
             within_next_hour = now <= reminder_time <= one_hour_later
