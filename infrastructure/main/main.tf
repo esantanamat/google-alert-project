@@ -285,8 +285,8 @@ EOF
 
 
 #toggle this for pipeline trigger, dummy trigger
-# resource "null_resource" "dummy_trigger" {
-#   provisioner "local-exec" {
-#     command = "echo 'Triggered by dummy resource'"
-#   }
-# }
+resource "null_resource" "dummy_trigger" {
+  provisioner "local-exec" {
+    command = "echo 'Triggered by dummy resource'"
+  }
+}
