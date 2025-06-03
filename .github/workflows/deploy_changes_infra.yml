@@ -6,6 +6,8 @@ on:
       - main
     paths:
       - infrastructure/main/**
+      - lambda-reminder-checker/**
+      - lambda-http-handler/**
   pull_request:
     branches:
       - main
