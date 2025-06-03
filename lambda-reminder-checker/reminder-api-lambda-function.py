@@ -24,9 +24,10 @@ def lambda_handler(event, context):
             reminder_time = item.get('arrival_time')
             if not reminder_time:
                 continue
-            within_next_hour = now <= reminder_time <= one_hour_later
+            within_next_hour =  nowhformat <= reminder_time <= one_hour_later_hformat
+            
             if within_next_hour:
-                print(f'it is within the next hour ${id}')
+                print(f'it is within the next hour ${id} ${reminder_time}')
                 #better to invoke another labmda function that handles the google api call
             else:
                 continue
@@ -34,8 +35,8 @@ def lambda_handler(event, context):
             reminder_time = item.get('arrival_datetime')
             if not reminder_time:
                 continue
-            within_next_hour =  nowhformat <= reminder_time <= one_hour_later_hformat
+            within_next_hour = now <= reminder_time <= one_hour_later
             if within_next_hour:
-                print(f'it is within the next hour (1 time thing format) ${id}')        
+                print(f'it is within the next hour (1 time thing format) ${id} ${reminder_time}')        
         
        
