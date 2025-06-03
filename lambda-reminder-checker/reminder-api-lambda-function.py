@@ -1,5 +1,6 @@
 import boto3
 from datetime import datetime, timedelta, timezone
+import json
 
 
 dynamodb = boto3.resource('dynamodb')
@@ -7,6 +8,13 @@ sns = boto3.resource('sns')
 
 TABLE_NAME = 'google-project-table'
 SNS_TOPIC_ARN = 'arn:aws:sns:us-east-1:463470969308:arriveby-alert-sns'
+
+headers = {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "Content-Type",
+        
+    }
 
 #This lambda function should get triggered by cloudwatch events
 def lambda_handler(event, context):
@@ -29,7 +37,11 @@ def lambda_handler(event, context):
             within_next_hour =  nowhformat <= reminder_time <= one_hour_later_hformat
             
             if within_next_hour:
-                print(f'it is within the next hour ${id} ${reminder_time}')
+                return {
+                    "statusCode": 200,
+                    "headers": headers,
+                    "body": json.dumps({"message": f"the time is within the hour ${id}"})
+                }
                 #better to invoke another labmda function that handles the google api call
             else:
                 continue
