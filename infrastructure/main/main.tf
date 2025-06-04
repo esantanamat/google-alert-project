@@ -14,7 +14,7 @@ resource "aws_dynamodb_table" "google_project_table" {
   name         = "google-project-table"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "user_id"
-  range_key    = "arrival_datetime"
+  range_key    = "arrival_time"
 
   attribute {
     name = "user_id"
@@ -26,7 +26,7 @@ resource "aws_dynamodb_table" "google_project_table" {
   #   type = "S"
   # }
 
-  # Uncomment attributes as needed for future features
+  
   attribute {
     name = "arrival_time"
     type = "S"
