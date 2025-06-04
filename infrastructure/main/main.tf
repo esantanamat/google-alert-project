@@ -259,29 +259,6 @@ resource "aws_s3_bucket_website_configuration" "example" {
 }
 
 
-resource "aws_sns_topic" "user_updates" {
-  name = "arriveby-alert-sns"
-
-  delivery_policy = <<EOF
-{
-  "http": {
-    "defaultHealthyRetryPolicy": {
-      "minDelayTarget": 20,
-      "maxDelayTarget": 20,
-      "numRetries": 3,
-      "numMaxDelayRetries": 0,
-      "numNoDelayRetries": 0,
-      "numMinDelayRetries": 0,
-      "backoffFunction": "linear"
-    },
-    "disableSubscriptionOverrides": false,
-    "defaultThrottlePolicy": {
-      "maxReceivesPerSecond": 1
-    }
-  }
-}
-EOF
-}
 
 
 #toggle this for pipeline trigger, dummy trigger
@@ -290,3 +267,95 @@ EOF
 #     command = "echo 'Triggered by dummy resource'"
 #   }
 # }
+
+
+#adding eventbridge  and step function to orchestrate the lambdas
+
+# resource "aws_sfn_state_machine" "arrival_time_notifier_sm" {
+#   name     = "arrival_time_notifier_sm"
+#   role_arn = aws_iam_role.step_function_role.arn
+
+#   definition = jsonencode({
+#     StartAt = "CheckArrivalTime",
+#     States = {
+#       CheckArrivalTime = {
+#         Type       = "Task",
+#         Resource   = aws_lambda_function.reminder_api_lambda.arn,
+#         Next       = "FetchGoogleAPI",
+#         ResultPath = "$.checkResult"
+#       },
+#       FetchGoogleAPI = {
+#         Type       = "Task",
+#         Resource   = "arn:aws:lambda:${var.region}:${data.aws_caller_identity.current.account_id}:function:fetch_google_api", # To be updated
+#         Next       = "SendSMS",
+#         ResultPath = "$.googleResult"
+#       },
+#       SendSMS = {
+#         Type     = "Task",
+#         Resource = "arn:aws:lambda:${var.region}:${data.aws_caller_identity.current.account_id}:function:send_sms", # To be updated
+#         End      = true
+#       }
+#     }
+#   })
+# }
+
+
+
+# resource "aws_cloudwatch_event_rule" "every_hour" {
+#   name                = "trigger_step_function_every_hour"
+#   schedule_expression = "rate(1 hour)"
+# }
+
+
+
+# resource "aws_iam_role_policy" "eventbridge_step_function_permission" {
+#   name = "allow_eventbridge_to_start_step_function"
+#   role = aws_iam_role.step_function_role.id
+
+#   policy = jsonencode({
+#     Version = "2012-10-17",
+#     Statement = [
+#       {
+#         Effect = "Allow",
+#         Action = "states:StartExecution",
+#         Resource = aws_sfn_state_machine.arrival_time_notifier_sm.arn
+#       }
+#     ]
+#   })
+# }
+
+
+# resource "aws_iam_role" "step_function_role" {
+#    name = "step_function_exec_role"
+
+#   assume_role_policy = jsonencode({
+#   Version = "2012-10-17",
+#   Statement = [
+#       {
+#       Action = "sts:AssumeRole",
+#       Effect = "Allow",
+#       Principal = {
+#         Service = "states.amazonaws.com"
+#       }
+#   }]
+#   })
+# }
+
+# resource "aws_lambda_permission" "stepfunc_lambda_1" {
+#   statement_id  = "AllowStepFunctionInvokeReminderChecker"
+#   action        = "lambda:InvokeFunction"
+#   function_name = aws_lambda_function.reminder_api_lambda.function_name
+#   principal     = "states.amazonaws.com"
+#   source_arn    = aws_sfn_state_machine.arrival_time_notifier_sm.arn
+# }
+
+
+# resource "aws_cloudwatch_event_target" "step_function_target" {
+#   rule      = aws_cloudwatch_event_rule.every_hour.name
+#   target_id = "step-function-invoker"
+#   arn       = aws_sfn_state_machine.arrival_time_notifier_sm.arn
+#   role_arn  = aws_iam_role.step_function_role.arn
+# }
+
+
+
