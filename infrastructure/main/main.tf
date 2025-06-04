@@ -31,7 +31,7 @@ resource "aws_dynamodb_table" "google_project_table" {
   #   name = "arrival_time"
   #   type = "S"
   # }
-  # attribute {
+  attribute {
     name = "arrival_datetime"
     type = "S"
   }
