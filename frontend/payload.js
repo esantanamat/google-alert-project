@@ -9,7 +9,7 @@ document.getElementById('notificationForm').addEventListener('submit', async (ev
         is_one_time: document.querySelector('input[name="is_one_time"]:checked')?.value,
         origin_address: document.getElementById('origin_address').value,
         destination_address: document.getElementById('destination_address').value,
-        phone_number: document.getElementById('phone_number').value
+        phone_number: document.getElementById('phone_number').value,
     };
 
     try {
