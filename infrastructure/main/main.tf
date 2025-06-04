@@ -14,17 +14,17 @@ resource "aws_dynamodb_table" "google_project_table" {
   name         = "google-project-table"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "user_id"
-  range_key    = "destination_name"
+  range_key    = "arrival_datetime"
 
   attribute {
     name = "user_id"
     type = "N"
   }
 
-  attribute {
-    name = "destination_name"
-    type = "S"
-  }
+  # attribute {
+  #   name = "destination_name"
+  #   type = "S"
+  # }
 
   # Uncomment attributes as needed for future features
   # attribute {
@@ -32,9 +32,9 @@ resource "aws_dynamodb_table" "google_project_table" {
   #   type = "S"
   # }
   # attribute {
-  #   name = "arrival_datetime"
-  #   type = "S"
-  # }
+    name = "arrival_datetime"
+    type = "S"
+  }
   # attribute {
   #   name = "origin_address"
   #   type = "S"
