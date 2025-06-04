@@ -27,14 +27,14 @@ resource "aws_dynamodb_table" "google_project_table" {
   # }
 
   # Uncomment attributes as needed for future features
-  # attribute {
-  #   name = "arrival_time"
-  #   type = "S"
-  # }
   attribute {
-    name = "arrival_datetime"
+    name = "arrival_time"
     type = "S"
   }
+  # attribute {
+  #   name = "arrival_datetime"
+  #   type = "S"
+  # }
   # attribute {
   #   name = "origin_address"
   #   type = "S"
