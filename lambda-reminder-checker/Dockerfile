@@ -1,5 +1,5 @@
 FROM public.ecr.aws/lambda/python:3.10
 
-COPY reminder-api-lambda-function.py ${LAMBDA_TASK_ROOT}
+COPY arrival-time-checker-function.py ${LAMBDA_TASK_ROOT}
 
-CMD ["reminder-api-lambda-function.lambda_handler"]
+CMD ["arrival-time-checker-function.lambda_handler"]
