@@ -432,29 +432,27 @@ resource "aws_iam_role" "step_function_role" {
   })
 }
 
-resource "aws_lambda_permission" "stepfunc_lambda_1" {
-  statement_id  = "AllowStepFunctionInvokeReminderChecker"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.reminder_api_lambda.function_name
-  principal     = "states.amazonaws.com"
-  source_arn    = aws_sfn_state_machine.arrival_time_notifier_sm.arn
+resource "aws_iam_role_policy" "stepfn_invoke_lambdas" {
+  name = "stepfn-invoke-lambdas"
+  role = aws_iam_role.step_function_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = "lambda:InvokeFunction",
+        Resource = [
+          aws_lambda_function.reminder_api_lambda.arn,
+          aws_lambda_function.google_api_function.arn,
+          aws_lambda_function.email_notification_lambda.arn
+        ]
+      }
+    ]
+  })
 }
 
-resource "aws_lambda_permission" "stepfunc_lambda_2" {
-  statement_id  = "AllowStepFunctionInvokeGoogleAPIFetcher"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.google_api_function.function_name
-  principal     = "states.amazonaws.com"
-  source_arn    = aws_sfn_state_machine.arrival_time_notifier_sm.arn
-}
 
-resource "aws_lambda_permission" "stepfunc_lambda_3" {
-  statement_id  = "AllowStepFunctionInvokeEmailSender"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.email_notification_lambda.function_name
-  principal     = "states.amazonaws.com"
-  source_arn    = aws_sfn_state_machine.arrival_time_notifier_sm.arn
-}
 
 resource "aws_cloudwatch_event_target" "step_function_target" {
   rule      = aws_cloudwatch_event_rule.every_hour.name
