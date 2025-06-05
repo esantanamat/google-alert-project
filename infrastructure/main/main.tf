@@ -178,7 +178,7 @@ resource "aws_lambda_function" "email_notification_lambda" {
   function_name = "email-notification-lambda"
   image_uri     = "${data.terraform_remote_state.init.outputs.ecr_repository_url}:email-notification-func-latest"
   package_type  = "Image"
-  role          = aws_iam_role.reminder_exec.arn
+  role          = aws_iam_role.google_api_role.arn
   timeout       = 30
 }
 
