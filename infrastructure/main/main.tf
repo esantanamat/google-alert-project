@@ -174,14 +174,6 @@ resource "aws_lambda_function" "reminder_api_lambda" {
   timeout       = 30
 }
 
-resource "aws_lambda_function" "google_api_function" {
-  function_name = "google-api-lambda-function"
-  image_uri     = "${data.terraform_remote_state.init.outputs.ecr_repository_url}:google-api-func-latest"
-  package_type  = "Image"
-  role          = aws_iam_role.reminder_exec.arn
-  timeout       = 30
-}
-
 resource "aws_iam_role" "google_api_role" {
   name = "google-api-role"
   assume_role_policy = jsonencode({
@@ -195,6 +187,15 @@ resource "aws_iam_role" "google_api_role" {
     }]
   })
 }
+
+resource "aws_lambda_function" "google_api_function" {
+  function_name = "google-api-lambda-function"
+  image_uri     = "${data.terraform_remote_state.init.outputs.ecr_repository_url}:google-api-func-latest"
+  package_type  = "Image"
+  role          = aws_iam_role.google_api_role.arn
+  timeout       = 30
+}
+
 
 resource "aws_iam_policy" "secrets_fetch_policy" {
   name = "secrets-fetch-policy"
