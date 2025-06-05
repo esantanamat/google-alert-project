@@ -80,17 +80,17 @@ jobs:
               --region $AWS_REGION \
               --function-name $LAMBDA_FUNCTION_NAME \
               --image-uri $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-      # - name: Update fourth lambda function with new image
-      #   env:
-      #     LAMBDA_FUNCTION_NAME: email-notification-lambda
-      #     ECR_REGISTRY: 
-      #     ECR_REPOSITORY: google-lambda
-      #     IMAGE_TAG: email-notification-func-latest
-      #   run: |
-      #     aws lambda update-function-code \
-      #         --region $AWS_REGION \
-      #         --function-name $LAMBDA_FUNCTION_NAME \
-      #         --image-uri $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+      - name: Update fourth lambda function with new image
+        env:
+          LAMBDA_FUNCTION_NAME: email-notification-lambda
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: google-lambda
+          IMAGE_TAG: email-notification-func-latest
+        run: |
+          aws lambda update-function-code \
+              --region $AWS_REGION \
+              --function-name $LAMBDA_FUNCTION_NAME \
+              --image-uri $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
               
 
 
