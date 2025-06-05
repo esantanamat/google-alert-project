@@ -83,7 +83,7 @@ jobs:
       - name: Update fourth lambda function with new image
         env:
           LAMBDA_FUNCTION_NAME: email-notification-lambda
-          ECR_REGISTRY: 
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: google-lambda
           IMAGE_TAG: email-notification-func-latest
         run: |
