@@ -30,7 +30,7 @@ def lambda_handler(event, context):
             "statusCode": 500,
             "body": json.dumps({"error": "Failed to retrieve email credentials"})
         }
-    for match in body["matches"]:
+    for match in body["results"]:
         user_id = match["user_id"]
         arrival_time = match["arrival_time"]
         to_email = match["email_address"]
