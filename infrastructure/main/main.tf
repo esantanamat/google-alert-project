@@ -247,12 +247,12 @@ resource "aws_iam_policy" "google_api_secrets_fetch_policy" {
 }
 
 
-resource "aws_iam_role_policy_attachment" "attach_secrets_fetch_policy" {
+resource "aws_iam_role_policy_attachment" "attach_google_secrets_fetch_policy" {
   role       = aws_iam_role.google_api_role.name
   policy_arn = aws_iam_policy.secrets_fetch_policy.arn
 }
 
-resource "aws_iam_role_policy_attachment" "attach_secrets_fetch_policy" {
+resource "aws_iam_role_policy_attachment" "attach_email_secrets_fetch_policy" {
   role       = aws_iam_role.email_notification_role.name
   policy_arn = aws_iam_policy.google_api_secrets_fetch_policy.arn
 }
