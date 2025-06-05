@@ -8,7 +8,6 @@
 
 
 import requests
-from decimal import Decimal
 import json
 import boto3
 url = 'https://maps.googleapis.com/maps/api/distancematrix/json'
