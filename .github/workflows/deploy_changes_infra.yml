@@ -67,6 +67,17 @@ jobs:
               --region $AWS_REGION \
               --function-name $LAMBDA_FUNCTION_NAME \
               --image-uri $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+      - name: Update third lambda function with new image
+        env:
+          LAMBDA_FUNCTION_NAME: google-api-lambda-function
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: google-lambda
+          IMAGE_TAG: google-api-func-latest
+        run: |
+          aws lambda update-function-code \
+              --region $AWS_REGION \
+              --function-name $LAMBDA_FUNCTION_NAME \
+              --image-uri $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
       
       - name: Terraform Init
