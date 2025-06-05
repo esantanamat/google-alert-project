@@ -6,4 +6,4 @@ COPY requirements.txt ./
 RUN pip install -r requirements.txt --target ${LAMBDA_TASK_ROOT}
 
 
-CMD ["google-api-function.py.lambda_handler"]
+CMD ["google-api-function.lambda_handler"]
