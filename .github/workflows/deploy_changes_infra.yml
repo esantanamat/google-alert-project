@@ -58,7 +58,7 @@ jobs:
 
       - name: Update second lambda function with new image
         env:
-          LAMBDA_FUNCTION_NAME: google-api-lambda-function
+          LAMBDA_FUNCTION_NAME: http-lambda-function
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: google-lambda
           IMAGE_TAG: http-handler-latest
