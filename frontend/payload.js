@@ -10,6 +10,7 @@ document.getElementById('notificationForm').addEventListener('submit', async (ev
         origin_address: document.getElementById('origin_address').value,
         destination_address: document.getElementById('destination_address').value,
         phone_number: document.getElementById('phone_number').value,
+        email_address: document.getElementById('email_address').value
     };
 
     try {

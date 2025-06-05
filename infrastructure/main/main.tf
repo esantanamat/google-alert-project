@@ -174,6 +174,14 @@ resource "aws_lambda_function" "reminder_api_lambda" {
   timeout       = 30
 }
 
+resource "aws_lambda_function" "email_notification_lambda" {
+  function_name = "email-notification-lambda"
+  image_uri     = "${data.terraform_remote_state.init.outputs.ecr_repository_url}:email-notification-func-latest"
+  package_type  = "Image"
+  role          = aws_iam_role.reminder_exec.arn
+  timeout       = 30
+}
+
 resource "aws_iam_role" "google_api_role" {
   name = "google-api-role"
   assume_role_policy = jsonencode({
@@ -420,3 +428,17 @@ resource "aws_secretsmanager_secret_version" "api_key_secret_version" {
   secret_string = var.api_key_secret
 }
 
+resource "aws_secretsmanager_secret" "email_secret" {
+  name = "email_credentials"
+}
+
+resource "aws_secretsmanager_secret_version" "email_secret_version" {
+  secret_id     = aws_secretsmanager_secret.email_secret.id
+  secret_string = var.email_secret_json
+}
+
+
+variable "email_secret_json" {
+  type      = string
+  sensitive = true
+}

@@ -10,6 +10,8 @@
 import requests
 import json
 import boto3
+from datetime import datetime, timedelta, timezone
+import re
 url = 'https://maps.googleapis.com/maps/api/distancematrix/json'
 
 headers = {
@@ -33,38 +35,73 @@ def get_secret():
         return None
 
 API_KEY = get_secret()
+
+
+
+def parse_duration(duration_text):
+    hours = 0
+    minutes = 0
+    
+    h = re.search(r"(\d+)\s*hour", duration_text)
+    if h:
+        hours = int(h.group(1))
+    
+    m = re.search(r"(\d+)\s*min", duration_text)
+    if m:
+        minutes = int(m.group(1))
+    return timedelta(hours=hours, minutes=minutes)
+
         
 def lambda_handler(event, context):
     results = []
-    body = json.loads(event["body"])  
+    body = json.loads(event["body"])
+
     for match in body["matches"]:
         user_id = match["user_id"]
         origin = match["origin_address"]
         destination = match["destination_address"]
         phone = match["phone_number"]
-        arrival_time = match["arrival_time"]
+        email_address = match["email_address"]
 
+        
+        try:
+            arrival_dt = datetime.strptime(match["arrival_time"], '%Y-%m-%d %H:%M:%S%z')
+        except ValueError:
+            arrival_dt = datetime.strptime(match["arrival_time"], '%Y-%m-%d %H:%M:%S')
+            arrival_dt = arrival_dt.replace(tzinfo=timezone.utc)
+
+        arrival_time = int(arrival_dt.timestamp())
+
+    
         params = {
             'origins': origin,
             'destinations': destination,
             'arrival_time': arrival_time,
-            'key': API_KEY  
-         }
-        
-        response = requests.get(url,params)
+            'key': API_KEY
+        }
+
+        response = requests.get(url, params=params)
         data = response.json()
+
         if data['rows'][0]['elements'][0]['status'] == 'OK':
-            duration_in_traffic = data['rows'][0]['elements'][0]['duration']['text']
-            results.append({'user_id': user_id, 'phone_number': phone, 'duration_in_traffic': duration_in_traffic})
+            duration_text = data['rows'][0]['elements'][0]['duration']['text']
+            traffic_duration = parse_duration(duration_text)
+            predicted_depart_time = arrival_dt - traffic_duration
+            predicted_depart_time_ts = int(predicted_depart_time.timestamp())
+
+            results.append({
+                'user_id': user_id,
+                'phone_number': phone,
+                'duration_in_traffic': duration_text,
+                'email_address': email_address,
+                'arrival_time': arrival_time,
+                'predicted_depart_time': predicted_depart_time_ts
+            })
         else:
-            print('error')
+            print(f"API error for user {user_id}: {data['rows'][0]['elements'][0]['status']}")
+
     return {
         "statusCode": 200,
         "headers": headers,
         "body": json.dumps({"results": results}, default=str)
     }
-
-        
-        
-    
-    

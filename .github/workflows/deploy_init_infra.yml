@@ -81,6 +81,7 @@ jobs:
             FIRST_IMAGE_TAG: http-handler-latest
             SECOND_IMAGE_TAG: reminder-checker-latest
             THIRD_IMAGE_TAG: google-api-func-latest
+            FOURTH_IMAGE_TAG: email-notification-func-latest
         run: |
             docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$FIRST_IMAGE_TAG ../../lambda-http-handler
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$FIRST_IMAGE_TAG
@@ -88,3 +89,5 @@ jobs:
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$SECOND_IMAGE_TAG
             docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$THIRD_IMAGE_TAG ../../commute-time-fetcher
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$THIRD_IMAGE_TAG
+            docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$FOURTH_IMAGE_TAG ../../email-notification
+            docker push $ECR_REGISTRY/$ECR_REPOSITORY:$FOURTH_IMAGE_TAG
