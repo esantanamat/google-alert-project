@@ -17,7 +17,7 @@ env:
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   BUCKET_TF_STATE: ${{ secrets.BUCKET_TF_STATE }}
   TF_VAR_api_key_secret: ${{ secrets.API_KEY_SECRET }}
-  EMAIL_CREDS_JSON: ${{ secrets.EMAIL_CREDS_JSON }}
+  TF_VAR_email_secret_json: ${{ secrets.EMAIL_CREDS_JSON }}
   AWS_REGION: us-east-1
 
 jobs:
