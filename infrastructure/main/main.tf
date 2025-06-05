@@ -390,6 +390,8 @@ resource "aws_sfn_state_machine" "arrival_time_notifier_sm" {
       SendEmail = {
         Type     = "Task",
         Resource = aws_lambda_function.email_notification_lambda.arn, 
+        InputPath = "$.googleResult"
+        ResultPath = "$.emailResult"
         End      = true
       }
     }
