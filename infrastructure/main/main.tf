@@ -178,7 +178,7 @@ resource "aws_lambda_function" "email_notification_lambda" {
   function_name = "email-notification-lambda"
   image_uri     = "${data.terraform_remote_state.init.outputs.ecr_repository_url}:email-notification-func-latest"
   package_type  = "Image"
-  role          = aws_iam_role.reminder_exec.arn
+  role          = aws_iam_role.email_notification_role.arn
   timeout       = 30
 }
 
@@ -234,7 +234,7 @@ resource "aws_iam_policy" "secrets_fetch_policy" {
   })
 }
 resource "aws_iam_policy" "google_api_secrets_fetch_policy" {
-  name = "google_api_secrets-fetch-policy"
+  name = "google-api-secrets-fetch-policy"
 
   policy = jsonencode({
     Version = "2012-10-17",
