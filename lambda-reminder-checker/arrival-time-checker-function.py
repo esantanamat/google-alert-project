@@ -41,7 +41,7 @@ def lambda_handler(event, context):
                 reminder_time += timedelta(days=1)
 
             if now <= reminder_time <= one_hour_later:
-                matches.append({'user_id': id, 'origin_address': item.get('origin_address'), 'destination_address': item.get('destination_address'), 'phone_number': item.get('phone_number'), 'arrival_time': reminder_time})
+                matches.append({'user_id': id, 'origin_address': item.get('origin_address'), 'destination_address': item.get('destination_address'), 'phone_number': item.get('phone_number'), 'arrival_time': int(reminder_time.timestamp())})
 
         except Exception as e:
             

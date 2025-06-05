@@ -357,5 +357,17 @@ resource "null_resource" "dummy_trigger" {
 #   role_arn  = aws_iam_role.step_function_role.arn
 # }
 
+variable "api_key_secret" {
+  type      = string
+  sensitive = true
+}
 
+resource "aws_secretsmanager_secret" "api_key_secret" {
+  name = "google_api_key"
+}
+
+resource "aws_secretsmanager_secret_version" "api_key_secret_version" {
+  secret_id     = aws_secretsmanager_secret.api_key_secret.id
+  secret_string = var.api_key_secret
+}
 
