@@ -40,8 +40,10 @@ Coming soon
 
 ### Architecture Diagram
 ![image](https://github.com/user-attachments/assets/3b3b7b49-e9be-448c-8e9b-b524f5b2250a)
-- The user interacts with an s3 static hosted website, which then sends a JSON request routed via API Gateway to a Lambda Function that handles the writing to the dynamodb table. 
-![image](https://github.com/user-attachments/assets/3cb9eb0f-7dbe-4f66-97ed-3466062283c3)
+- The user interacts with an s3 static hosted website, which then sends a JSON request routed via API Gateway to a Lambda Function that handles the writing to the dynamodb table.
+
+![image](https://github.com/user-attachments/assets/b83742f3-20c6-4cbe-a063-6ff1a7f02a79)
+
 - A cloudwatch events invoked step functions is triggered to orchestrate 3 lambda functions. The first lambda scans the table and determines if the arrival time is within range, the second lambda function fetches the commute time using Google Maps API, and the last function handles sending the user an email.
 
 
