@@ -39,7 +39,8 @@ Simple s3 hosted website with a web form for inputting:
 Coming soon 
 
 ### Architecture Diagram
-Coming soon 
+![image](https://github.com/user-attachments/assets/3b3b7b49-e9be-448c-8e9b-b524f5b2250a)
+
 
 ### Future Improvements for Production
 - Add user authentication and history of reminders
