@@ -1,9 +1,11 @@
 # Smart Travel Reminder
-Inspiration
-The idea for this project came while preparing to leave for a destination. I noticed that Apple Maps provides an estimated departure time, but I wanted something more precise and actionable. Instead of relying on rough estimates, I decided to create a full-stack application that allows users to enter when they need to arrive somewhere, where they're going, and where they're coming from — and then receive a real-time reminder (via email) when it's time to leave. Note: This feature is available with Google Maps, and Calendar, but the idea was to create a feature that does not require a mobile application.
+## Inspiration
+
+The idea for this project came while preparing ahead to leave for a destination. I noticed that Apple Maps provides an estimated departure time, but I wanted something more precise. Instead of relying on rough estimates, I decided to create a full-stack application that allows users to enter when they need to arrive somewhere, where they're going, and where they're coming from — and then receive a real-time reminder (via email) when it's time to leave. Note: This feature is available with Google Maps, and Calendar, but the idea was to create a feature that does not require a mobile application. I created this project to stay within the AWS Free tier for dev purposes.
 
 Features
-Simple web form for inputting:
+Simple s3 hosted website with a web form for inputting:
+
 Destination
 
 Starting location
@@ -12,7 +14,7 @@ Arrival time
 
 Email address
 
-Phone Number (to be integrated w twilio later)
+Phone Number (to be integrated w twilio in prod)
 
 Backend calculates real-time traffic data using **Google Maps API**.
 
