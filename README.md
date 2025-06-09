@@ -16,11 +16,11 @@ Simple s3 hosted website with a web form for inputting:
 
 * Phone Number (to be integrated w twilio in prod)
 
-Backend calculates real-time traffic data using **Google Maps API**.
+- Backend calculates real-time traffic data using **Google Maps API**.
 
-Sends you an email notification when it's time to leave.
+- Sends you an email notification when it's time to leave.
 
-Built with serverless architecture using AWS.
+- Built with serverless architecture using AWS.
 
 ### Tech Stack
 Frontend: HTML/CSS, JS + (planned upgrade to React)
@@ -44,14 +44,14 @@ Coming soon
 Coming soon 
 
 Future Improvements for Production
-Add user authentication and history of reminders
+- Add user authentication and history of reminders
 
-SMS support via Twilio
+- SMS support via Twilio
 
-React frontend with validation and autocomplete
+- React frontend with validation and autocomplete
 
-Better UI/UX design
+- Better UI/UX design
 
-Optimize for mobile devices
+- Optimize for mobile devices
 
 Integrate with a calendar system or create a feature that is a calendar system
