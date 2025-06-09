@@ -23,19 +23,17 @@ Simple s3 hosted website with a web form for inputting:
 - Built with serverless architecture using AWS.
 
 ### Tech Stack
-Frontend: HTML/CSS, JS + (planned upgrade to React)
+- Frontend: HTML/CSS, JS + (planned upgrade to React)
 
-Backend: AWS Lambda (Python)
+- Backend: AWS Lambda (Python)
 
-APIs:
+- Google Maps Distance Matrix API
 
-Google Maps Distance Matrix API
+- Email Notifications: smtplib python
 
-Email Notifications: smtplib python
+- Infrastructure: Terraform provisioned AWS resources, i.e step functions, api gateway, lambda, roles, dynamodb,
 
-Infrastructure: Terraform provisioned AWS resources, i.e step functions, api gateway, lambda, roles, dynamodb,
-
-State Management: AWS Step Functions
+- State Management: AWS Step Functions
 
 ### Live Demo
 Coming soon 
