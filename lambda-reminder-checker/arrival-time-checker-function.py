@@ -23,7 +23,7 @@ def lambda_handler(event, context):
         one_time_toggle = item.get('is_one_time')
 
         try:
-            if one_time_toggle == 'yes':
+            if one_time_toggle == 'no':
                 
                 parsed_time = datetime.strptime(item.get('arrival_time'), '%H:%M').time()
                 reminder_time = now.replace(
