@@ -6,15 +6,15 @@ The idea for this project came while preparing ahead to leave for a destination.
 Features
 Simple s3 hosted website with a web form for inputting:
 
-Destination
+* Destination
 
-Starting location
+* Starting location
 
-Arrival time
+* Arrival time
 
-Email address
+* Email address
 
-Phone Number (to be integrated w twilio in prod)
+* Phone Number (to be integrated w twilio in prod)
 
 Backend calculates real-time traffic data using **Google Maps API**.
 
