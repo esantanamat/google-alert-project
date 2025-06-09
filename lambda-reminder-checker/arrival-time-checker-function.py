@@ -37,9 +37,6 @@ def lambda_handler(event, context):
                 parsed_datetime = datetime.strptime(item.get('arrival_datetime'), '%Y-%m-%dT%H:%M')
                 reminder_time = parsed_datetime.replace(tzinfo=timezone.utc)
 
-            if reminder_time < now:
-                reminder_time += timedelta(days=1)
-
             if now <= reminder_time <= one_hour_later:
                 matches.append({'user_id': id, 'origin_address': item.get('origin_address'), 'destination_address': item.get('destination_address'), 'phone_number': item.get('phone_number'), 'arrival_time': reminder_time, 'email_address': item.get('email_address')})
 
