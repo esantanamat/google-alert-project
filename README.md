@@ -43,7 +43,7 @@ Coming soon
 ### Architecture Diagram
 Coming soon 
 
-Future Improvements for Production
+### Future Improvements for Production
 - Add user authentication and history of reminders
 
 - SMS support via Twilio
