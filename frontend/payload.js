@@ -37,13 +37,13 @@ document.getElementById('notificationForm').addEventListener('submit', async (ev
 
 function toggleTime(decision) {
     const constantreminder = document.getElementById('arrival_time')
-    singlereminder = document.getElementById('arrival_datetime')
-    if (decision == 'yes') {
+    const singlereminder = document.getElementById('arrival_datetime')
+    if (decision == true) {
 
         constantreminder.style.display = 'block'
         singlereminder.style.display = 'none'
     }
-    if (decision == 'no') {
+    else {
         constantreminder.style.display = 'none'
         singlereminder.style.display = 'block'
     }
