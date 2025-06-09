@@ -2,6 +2,7 @@ import smtplib
 from email.mime.text import MIMEText
 import json
 import boto3
+from datetime import datetime, timedelta, timezone
 
 subject = 'Smart Notification Reminder'
 
@@ -39,9 +40,9 @@ def lambda_handler(event, context):
         
         
         message_text = (
-            f"Hello,\n\nThis is your reminder for arrival time: {arrival_time}.\n"
-            f"Please depart by: {predicted_depart_time}.\n"
-            f"Estimated commute time: {duration_in_traffic}.\n\n"
+            f"Hello,\n\nThis is your reminder for arrival time: {datetime.datetime.utcfromtimestamp(arrival_time)}.\n"
+            f"Please depart by: {datetime.datetime.utcfromtimestamp(predicted_depart_time)}.\n"
+            f"Estimated commute time: {datetime.datetime.utcfromtimestamp(duration_in_traffic)}.\n\n"
             f"Thank you!\nUser ID: {user_id}"
         )
 
