@@ -37,14 +37,20 @@ document.getElementById('notificationForm').addEventListener('submit', async (ev
 
 function toggleTime(decision) {
     const constantreminder = document.getElementById('arrival_time')
+    const labelconstantreminder = document.getElementById('label_arrival_time')
     const singlereminder = document.getElementById('arrival_datetime')
+    const labelsinglereminder = document.getElementById('label_arrival_datetime')
     if (decision == true) {
 
         constantreminder.style.display = 'block'
+        labelconstantreminder.style.display = 'block'
         singlereminder.style.display = 'none'
+        labelsinglereminder.style.display = 'none'
     }
     else {
         constantreminder.style.display = 'none'
+        labelconstantreminder.style.display = 'none'
         singlereminder.style.display = 'block'
+        labelsinglereminder.style.display = 'none'
     }
 }
