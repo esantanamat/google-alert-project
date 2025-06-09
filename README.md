@@ -53,5 +53,5 @@ Future Improvements for Production
 - Better UI/UX design
 
 - Optimize for mobile devices
-
-Integrate with a calendar system or create a feature that is a calendar system
+  
+- Integrate with a calendar system or create a feature that is a calendar system
